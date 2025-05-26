@@ -1,2 +1,7 @@
 /* STRUCTURAL */
-export { default as Dashboard } from "./structural/Dashboard";
+export { default as CurrentProjects } from "./structural/CurrentProjects";
+export { default as ProjectCard } from "./structural/ProjectCard";
+export { default as ProjectInputCard } from "./structural/ProjectInputCard";
+
+/* BUTTONS */
+export { default as AddButton } from "./buttons/AddButton";

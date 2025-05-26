@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponse
 from django.http import HttpRequest, JsonResponse
 from django.db import IntegrityError
-from .models import Task
+from ..models import Task
 from django.views.decorators.csrf import csrf_exempt
 import json
 
@@ -14,14 +14,16 @@ def add_task(request: HttpRequest):
   if request.method == "POST": # check request method
     try:
       # parse the data to json from body
-      data = json.loads(request.body)
+      data: dict = json.loads(request.body)
     except Exception as e:
       return HttpResponse(f"Invalid JSON: {str(e)}", status=400)
     
     task_data = {
+      "id": data.get("id"),
       "title": data.get("title"),
       "content": data.get("content"),
       "status": data.get("status"),
+      "project_id": data.get("project_id")
     }
 
     try:
@@ -70,3 +72,6 @@ def get_task_by_id(task_id):
     return Task.objects.get(id=task_id)
   except Task.DoesNotExist:
     return None
+  
+
+

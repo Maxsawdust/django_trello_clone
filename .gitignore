@@ -1,28 +1,27 @@
-# Python
+# Python cache and compiled files
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.pyc
 
-# Django migrations
+# Django migrations (compiled and cache)
 */migrations/*.pyc
 */migrations/*.pyo
 */migrations/__pycache__/
-*/migrations/*.py
 
 # SQLite database
 *.sqlite3
 db.sqlite3
 
-# Environment
+# Environment variables and virtual environments
 .env
 venv/
 ENV/
 env/
 *.env
 
-# VS Code
+# VS Code settings
 .vscode/
 
 # OS files
@@ -32,13 +31,17 @@ Thumbs.db
 # Logs
 *.log
 
-# Compiled files
-*.so
-
-# Test coverage
+# Test coverage and build artifacts
 htmlcov/
 .coverage
 .tox/
 .nox/
 .cache/
 .pytest_cache/
+
+# Django specific
+backend/testApp/myapp/migrations/
+backend/testApp/__pycache__/
+backend/testApp/myapp/__pycache__/
+backend/testApp/testApp/__pycache__/
+backend/venv/
