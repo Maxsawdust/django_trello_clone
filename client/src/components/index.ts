@@ -5,3 +5,4 @@ export { default as ProjectInputCard } from "./structural/ProjectInputCard";
 
 /* BUTTONS */
 export { default as AddButton } from "./buttons/AddButton";
+export { default as OptionButton } from "./buttons/OptionButton";
