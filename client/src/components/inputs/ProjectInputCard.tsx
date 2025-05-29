@@ -35,6 +35,8 @@ export default function ProjectInputCard() {
       const projectData: Project = {
         title: inputValue, // user input value
         id: newCurrentProjectId, // current Id from store + 1
+        created_at: new Date(Date.now()),
+        updated_at: new Date(Date.now()),
       };
       addProjectToDB(projectData);
 

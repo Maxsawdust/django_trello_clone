@@ -12,11 +12,11 @@ def add_project(request: HttpRequest):
       # Parse data from body
       data:dict = json.loads(request.body)
     except Exception as e:
-      return HttpResponse(f"Error: {str(e)}", status=400)
+      return HttpResponse(f"Error: {str(e)}", status=500)
     
     project_data = {
       "id": data.get("id"),
-      "title": data.get("title")
+      "title": data.get("title"),
     }
 
     try:
@@ -52,6 +52,35 @@ def delete_project(request:HttpRequest, project_id:int):
         return HttpResponse("Project successfully deleted", status=200)
       except Exception as e:
         return HttpResponse(f"Error deleting project: {str(e)}", status=500)
+  else:
+    return HttpResponse("Error: Invalid request", status=401)
+  
+@csrf_exempt
+def edit_project(request:HttpRequest):
+  if request.method == "PATCH":
+        # get edited project from body
+    try:
+      data:dict = json.loads(request.body)
+    except Exception as e:
+      return HttpResponse(f"Error: {str(e)}", status=500)      
+
+    project_id = data["id"]
+    
+    project:Project = get_project_by_id(project_id)
+
+    if project == None:
+      return HttpResponse("Error: Project not found", status=404)
+    
+    try:
+      project.title = data["title"]
+      project.save()
+      return HttpResponse("Project updated successfully", status=201)
+    except IntegrityError:
+      return HttpResponse("Database error: Invalid data", status=400)
+    except Exception as e:
+      return HttpResponse(f"Error: str(e)", status=500)
+    
+
   else:
     return HttpResponse("Error: Invalid request", status=401)
 

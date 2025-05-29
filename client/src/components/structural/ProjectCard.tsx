@@ -1,31 +1,69 @@
 import { FaListCheck } from "react-icons/fa6";
 import { SlOptions } from "react-icons/sl";
-import ProjectOptions from "./ProjectOptions";
+import { ProjectOptions, ProjectEditInput } from "../";
 import { AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import type { Project } from "../../store/types";
+import { useLocation, useNavigate } from "react-router";
 
 interface Props {
-  title: string;
+  project: Project;
 }
 
-export default function ProjectCard({ title }: Props) {
+interface EditingContextType {
+  isEditing: boolean;
+  setIsEditing: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+// state context to avoid crazy prop drilling all over the place
+export const EditingContext = createContext<EditingContextType>({
+  isEditing: false,
+  setIsEditing: () => {},
+});
+
+export default function ProjectCard({ project }: Props) {
   const [optionsAreDisplayed, setOptionsAreDisplayed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [isEditing, setIsEditing] = useState(false);
+  const [isSelected, setIsSelected] = useState(false);
+
+  const navigate = useNavigate();
+  const pathname = useLocation().pathname;
 
   const handleOptions = (e: React.MouseEvent) => {
     setOptionsAreDisplayed(true);
     setMousePosition({ x: e.clientX, y: e.clientY });
   };
 
+  useEffect(() => {
+    if (optionsAreDisplayed && isEditing) setOptionsAreDisplayed(false);
+  }, [isEditing]);
+
+  useEffect(() => {
+    // check if the user is on the project page
+    if (pathname.match(/^\/[0-9]+$/)) {
+      const id = pathname.replace("/", "");
+      Number(id) == project.id ? setIsSelected(true) : setIsSelected(false);
+    }
+  }, [pathname]);
+
   return (
-    <>
-      <div className="relative w-full h-10 px-5 rounded-lg hover:bg-background transition-all duration-150">
+    <EditingContext.Provider value={{ isEditing, setIsEditing }}>
+      <div
+        className="relative w-full h-10 px-5 rounded-lg hover:bg-background transition-all duration-150"
+        style={
+          isSelected ? { backgroundColor: "var(--color-background)" } : {}
+        }>
         <button
           className="h-full w-full flex items-center gap-5 cursor-pointer"
-          onClick={() => console.log("button1")}>
+          onClick={() => navigate(`/${project.id}`)}>
           <FaListCheck size={20} />
           {/* Project name */}
-          <p className="">{title}</p>
+          {isEditing ? (
+            <ProjectEditInput project={project} />
+          ) : (
+            <p className="">{project.title}</p>
+          )}
         </button>
 
         {/* Project options */}
@@ -48,11 +86,12 @@ export default function ProjectCard({ title }: Props) {
       <AnimatePresence>
         {optionsAreDisplayed && (
           <ProjectOptions
+            project={project}
             mousePosition={mousePosition}
             setOptionsAreDisplayed={setOptionsAreDisplayed}
           />
         )}
       </AnimatePresence>
-    </>
+    </EditingContext.Provider>
   );
 }

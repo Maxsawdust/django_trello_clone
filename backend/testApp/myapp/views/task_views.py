@@ -23,7 +23,7 @@ def add_task(request: HttpRequest):
       "title": data.get("title"),
       "content": data.get("content"),
       "status": data.get("status"),
-      "project_id": data.get("project_id")
+      "project_id": data.get("project_id"),
     }
 
     try:

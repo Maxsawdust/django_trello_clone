@@ -7,5 +7,6 @@ urlpatterns = [
     path("tasks/delete/<int:task_id>/", task_views.delete_task, name="delete_task"),
     path("projects/add/", project_views.add_project, name="add_project"),
     path("projects/get/", project_views.get_projects, name="get_projects"),
-    path("projects/delete/<int:project_id>/", project_views.delete_project, name="delete_project")
+    path("projects/delete/<int:project_id>/", project_views.delete_project, name="delete_project"),
+    path("projects/edit/", project_views.edit_project, name="edit_project"),
 ]

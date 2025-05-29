@@ -12,7 +12,7 @@ export default function Dashboard() {
         <div className="w-full h-[50%] bg-white rounded-2xl"></div>
 
         {/* Progress graph */}
-        <div className="w-full h-[50%] bg-white rounded-2xl"></div>
+        <div className="w-full h-[50%] bg-accent-2 rounded-2xl"></div>
       </div>
     </div>
   );
